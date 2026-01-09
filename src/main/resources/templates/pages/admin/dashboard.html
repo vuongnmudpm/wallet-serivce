@@ -1,0 +1,115 @@
+<th:block th:replace="~{layout/main-layout :: main_layout(~{::#admin-dashboard-content})}">
+    <div id="admin-dashboard-content">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <div class="mb-8 flex justify-between items-end">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-800">Tổng quan hệ thống</h2>
+                <p class="text-slate-500">Báo cáo tình hình vận hành SentinelPay thời gian thực.</p>
+            </div>
+            <button class="btn btn-primary bg-indigo-600 border-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                Xuất báo cáo tháng
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="stat bg-white shadow-sm border border-slate-100 rounded-2xl">
+                <div class="stat-figure text-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                </div>
+                <div class="stat-title text-slate-500 font-medium">Người dùng</div>
+                <div class="stat-value text-slate-800" th:text="${#numbers.formatInteger(stats.totalUsers, 0, 'COMMA')}">1,250</div>
+                <div class="stat-desc text-green-600 font-bold">↗︎ 14% tháng này</div>
+            </div>
+
+            <div class="stat bg-white shadow-sm border border-slate-100 rounded-2xl">
+                <div class="stat-figure text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div class="stat-title text-slate-500 font-medium">Tổng số dư ví</div>
+                <div class="stat-value text-slate-800 text-2xl" th:text="${#numbers.formatDecimal(stats.totalSystemBalance, 0, 'COMMA', 0, 'POINT') + ' đ'}">8.5B</div>
+                <div class="stat-desc text-slate-400 font-medium">Lưu ký tại ngân hàng</div>
+            </div>
+
+            <div class="stat bg-white shadow-sm border border-slate-100 rounded-2xl">
+                <div class="stat-figure text-rose-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <div class="stat-title text-slate-500 font-medium">Nghi vấn chờ duyệt</div>
+                <div class="stat-value text-rose-600 underline" th:text="${stats.pendingFrauds}">5</div>
+                <div class="stat-desc text-rose-400">Yêu cầu xử lý gấp</div>
+            </div>
+
+            <div class="stat bg-white shadow-sm border border-slate-100 rounded-2xl">
+                <div class="stat-figure text-amber-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <div class="stat-title text-slate-500 font-medium">Phí thu được (Today)</div>
+                <div class="stat-value text-amber-600" th:text="${#numbers.formatDecimal(stats.revenueToday, 0, 'COMMA', 0, 'POINT') + ' đ'}">1.2M</div>
+                <div class="stat-desc text-amber-400 italic">Target: 2.0M</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="card bg-white p-6 shadow-sm border border-slate-100">
+                <h3 class="font-bold text-slate-700 mb-4">Xu hướng Giao dịch nghi vấn (7 ngày qua)</h3>
+                <canvas id="fraudChart" height="150"></canvas>
+            </div>
+
+            <div class="card bg-white p-6 shadow-sm border border-slate-100">
+                <h3 class="font-bold text-slate-700 mb-4">Giao dịch hệ thống mới nhất</h3>
+                <div class="overflow-x-auto">
+                    <table class="table table-xs w-full">
+                        <thead>
+                        <tr class="text-slate-400 uppercase">
+                            <th>User</th><th>Số tiền</th><th>Loại</th><th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="font-bold">vuong_dev</td>
+                            <td class="text-green-600">+1.000.000</td>
+                            <td>TOPUP</td>
+                            <td>vừa xong</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">customer_01</td>
+                            <td class="text-red-600">-250.000</td>
+                            <td>TRANSFER</td>
+                            <td>2 phút trước</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            // Lấy dữ liệu từ Model truyền sang JS
+            const labels = [[${chartLabels}]];
+            const dataValues = [[${chartData}]];
+
+            const ctx = document.getElementById('fraudChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số vụ nghi vấn',
+                        data: dataValues,
+                        borderColor: '#4f46e5', // Indigo-600
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        </script>
+    </div>
+</th:block>

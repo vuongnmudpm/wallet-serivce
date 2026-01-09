@@ -1,0 +1,74 @@
+<th:block th:replace="~{layout/main-layout :: main_layout(~{::#history-content})}">
+    <div id="history-content">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-slate-800">Lịch sử giao dịch</h2>
+            <button class="btn btn-outline btn-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                Xuất file Excel
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+            <div class="form-control">
+                <input type="text" placeholder="Tìm kiếm mã giao dịch..." class="input input-bordered w-full bg-slate-50" />
+            </div>
+            <div class="form-control">
+                <select class="select select-bordered bg-slate-50">
+                    <option disabled selected>Trạng thái</option>
+                    <option>Thành công</option>
+                    <option>Đang xử lý</option>
+                    <option>Thất bại</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <input type="date" class="input input-bordered bg-slate-50" />
+            </div>
+            <button class="btn btn-primary bg-indigo-600 border-none">Lọc kết quả</button>
+        </div>
+
+        <div class="card bg-white shadow-xl overflow-hidden border border-slate-100">
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead class="bg-slate-50">
+                    <tr>
+                        <th class="text-slate-500 uppercase text-xs">Thời gian</th>
+                        <th class="text-slate-500 uppercase text-xs">Mã giao dịch</th>
+                        <th class="text-slate-500 uppercase text-xs">Loại</th>
+                        <th class="text-slate-500 uppercase text-xs">Nội dung</th>
+                        <th class="text-slate-500 uppercase text-xs text-right">Số tiền</th>
+                        <th class="text-slate-500 uppercase text-xs text-center">Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="txn : ${transactions}" class="hover:bg-slate-50 transition-colors">
+                        <td class="text-sm" th:text="${#temporals.format(txn.date, 'dd/MM/yyyy HH:mm')}">09/01/2026 10:00</td>
+                        <td class="font-mono text-xs font-bold text-indigo-600" th:text="${txn.id}">#TXN12345</td>
+                        <td th:text="${txn.type}">Chuyển tiền</td>
+                        <td class="text-sm italic text-slate-600" th:text="${txn.description}">Gửi cho bạn bè</td>
+                        <td class="text-right font-bold"
+                            th:classappend="${txn.amount > 0 ? 'text-green-600' : 'text-red-600'}"
+                            th:text="${#numbers.formatDecimal(txn.amount, 0, 'COMMA', 0, 'POINT') + ' đ'}">
+                            -50,000 đ
+                        </td>
+                        <td class="text-center">
+                            <span th:if="${txn.status == 'SUCCESS'}" class="badge badge-success badge-sm text-white py-3 px-4">THÀNH CÔNG</span>
+                            <span th:if="${txn.status == 'PENDING'}" class="badge badge-warning badge-sm text-white py-3 px-4">ĐANG XỬ LÝ</span>
+                            <span th:if="${txn.status == 'FAILED'}" class="badge badge-error badge-sm text-white py-3 px-4">THẤT BẠI</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4 bg-slate-50 flex justify-center">
+                <div class="join">
+                    <button class="join-item btn btn-sm">«</button>
+                    <button class="join-item btn btn-sm btn-active bg-indigo-600 border-none text-white">1</button>
+                    <button class="join-item btn btn-sm">2</button>
+                    <button class="join-item btn btn-sm">3</button>
+                    <button class="join-item btn btn-sm">»</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>

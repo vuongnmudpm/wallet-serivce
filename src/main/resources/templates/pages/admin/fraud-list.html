@@ -1,0 +1,74 @@
+<th:block th:replace="~{layout/main-layout :: main_layout(~{::#admin-fraud-content})}">
+    <div id="admin-fraud-content">
+        <div class="mb-8">
+            <h2 class="text-3xl font-extrabold text-slate-800 flex items-center gap-3">
+                <span class="p-2 bg-red-100 rounded-lg text-red-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </span>
+                Xử lý Giao dịch Nghi vấn
+            </h2>
+            <p class="text-slate-500 mt-2 ml-14">Hệ thống phát hiện các giao dịch có dấu hiệu bất thường cần xác nhận thủ công.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="stats shadow bg-white border border-slate-100">
+                <div class="stat">
+                    <div class="stat-title text-slate-500">Đang chờ duyệt</div>
+                    <div class="stat-value text-orange-500" th:text="${#lists.size(frauds)}">2</div>
+                    <div class="stat-desc">Giao dịch cần xử lý ngay</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-white shadow-xl border border-slate-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead class="bg-slate-50">
+                    <tr>
+                        <th class="text-slate-500 uppercase text-xs p-5">Thời gian</th>
+                        <th class="text-slate-500 uppercase text-xs">Mã TXN</th>
+                        <th class="text-slate-500 uppercase text-xs">Người gửi -> Nhận</th>
+                        <th class="text-slate-500 uppercase text-xs">Số tiền</th>
+                        <th class="text-slate-500 uppercase text-xs">Lý do rủi ro</th>
+                        <th class="text-slate-500 uppercase text-xs text-center">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                    <tr th:each="f : ${frauds}" class="hover:bg-slate-50 transition-colors">
+                        <td class="p-5 text-sm text-slate-500" th:text="${#temporals.format(f.createdAt, 'HH:mm dd/MM/yy')}">10:00 09/01</td>
+                        <td class="font-mono text-xs font-bold text-indigo-600" th:text="${f.txnId}">#TXN-8821</td>
+                        <td>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-700" th:text="${f.sender}">sender</span>
+                                <span class="text-xs text-slate-400">tới</span>
+                                <span class="font-bold text-slate-700" th:text="${f.receiver}">receiver</span>
+                            </div>
+                        </td>
+                        <td class="font-extrabold text-red-600" th:text="${#numbers.formatDecimal(f.amount, 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                            50,000,000 VND
+                        </td>
+                        <td>
+                            <span class="badge badge-error badge-outline text-xs font-bold px-3 py-3" th:text="${f.riskReason}">SỐ TIỀN LỚN</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="flex justify-center gap-2">
+                                <button class="btn btn-sm btn-success text-white px-4">Duyệt</button>
+                                <button class="btn btn-sm btn-error text-white px-4">Từ chối</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${#lists.isEmpty(frauds)}" class="p-20 text-center">
+                <div class="text-slate-300 mb-4">
+                    <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <p class="text-slate-400 font-medium">Tuyệt vời! Không có giao dịch nghi vấn nào cần xử lý.</p>
+            </div>
+        </div>
+    </div>
+</th:block>

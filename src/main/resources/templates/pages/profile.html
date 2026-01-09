@@ -1,0 +1,126 @@
+<th:block th:replace="~{layout/main-layout :: main_layout(~{::#profile-content})}">
+    <div id="profile-content">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-extrabold text-slate-800 mb-8">Cài đặt tài khoản</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="card bg-white shadow-sm border border-slate-100 p-6 text-center">
+                        <div class="avatar online mb-4">
+                            <div class="w-24 rounded-full ring ring-indigo-500 ring-offset-base-100 ring-offset-2">
+                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vương" />
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800" th:text="${user.fullName}">Vương Developer</h3>
+                        <p class="text-sm text-slate-500 mb-4" th:text="'@' + ${user.username}">@vuong_developer</p>
+
+                        <div th:if="${user.kycVerified}" class="badge badge-success gap-2 py-3 text-white w-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                            Đã xác minh (KYC)
+                        </div>
+                    </div>
+
+                    <div class="card bg-white shadow-sm border border-slate-100 p-4">
+                        <nav id="profile-nav" class="flex flex-col gap-1">
+                            <a href="#general" id="nav-general"
+                               class="nav-item btn btn-ghost justify-start text-indigo-600 bg-indigo-50">
+                                Thông tin chung
+                            </a>
+                            <a href="#security" id="nav-security"
+                               class="nav-item btn btn-ghost justify-start text-slate-600">
+                                Bảo mật & Mật khẩu
+                            </a>
+                            <a href="#notifications" id="nav-notifications"
+                               class="nav-item btn btn-ghost justify-start text-slate-600">
+                                Thông báo
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 space-y-8">
+                    <section id="general" class="card bg-white shadow-sm border border-slate-100 p-8">
+                        <h4 class="text-lg font-bold text-slate-800 mb-6">Thông tin cơ bản</h4>
+                        <form class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="form-control w-full">
+                                    <label class="label"><span class="label-text font-semibold">Họ và tên</span></label>
+                                    <input type="text" th:value="${user.fullName}" class="input input-bordered bg-slate-50" />
+                                </div>
+                                <div class="form-control w-full">
+                                    <label class="label"><span class="label-text font-semibold">Số điện thoại</span></label>
+                                    <input type="text" th:value="${user.phoneNumber}" class="input input-bordered bg-slate-50" />
+                                </div>
+                            </div>
+                            <div class="form-control w-full">
+                                <label class="label"><span class="label-text font-semibold">Địa chỉ Email</span></label>
+                                <input type="email" th:value="${user.email}" class="input input-bordered bg-slate-50" />
+                            </div>
+                            <button class="btn btn-primary bg-indigo-600 border-none mt-4">Lưu thay đổi</button>
+                        </form>
+                    </section>
+
+                    <section id="security" class="card bg-white shadow-sm border border-slate-100 p-8">
+                        <h4 class="text-lg font-bold text-slate-800 mb-6">Bảo mật tài khoản</h4>
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center pb-6 border-b border-slate-100">
+                                <div>
+                                    <p class="font-bold text-slate-700">Đổi mật khẩu</p>
+                                    <p class="text-xs text-slate-500">Cập nhật mật khẩu định kỳ để tăng tính bảo mật</p>
+                                </div>
+                                <a th:href="@{/profile/security/change-password}" class="btn btn-outline btn-sm">
+                                    Thay đổi
+                                </a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="font-bold text-slate-700">Xác thực 2 lớp (2FA)</p>
+                                    <p class="text-xs text-slate-500">Hiện tại đang: <span class="text-green-600 font-bold">BẬT</span></p>
+                                </div>
+                                <a th:href="@{/security/setup-2fa}" class="btn btn-ghost btn-sm text-indigo-600">Cấu hình</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="notifications" class="card bg-white shadow-sm border border-slate-100 p-8">
+                        <h4 class="text-lg font-bold text-slate-800 mb-6">Thông báo</h4>
+                        <div class="space-y-4">
+                            <div class="form-control">
+                                <label class="label cursor-pointer justify-start gap-4">
+                                    <input type="checkbox" class="toggle toggle-primary" checked />
+                                    <span class="label-text">Thông báo giao dịch qua Email</span>
+                                </label>
+                            </div>
+                            <div class="form-control">
+                                <label class="label cursor-pointer justify-start gap-4">
+                                    <input type="checkbox" class="toggle toggle-primary" checked />
+                                    <span class="label-text">Thông báo đăng nhập thiết bị lạ</span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // 1. Xóa trạng thái active của tất cả các mục
+                navItems.forEach(nav => {
+                    nav.classList.remove('text-indigo-600', 'bg-indigo-50');
+                    nav.classList.add('text-slate-600');
+                });
+
+                // 2. Thêm trạng thái active cho mục vừa được click
+                this.classList.add('text-indigo-600', 'bg-indigo-50');
+                this.classList.remove('text-slate-600');
+            });
+        });
+    });
+</script>

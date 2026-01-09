@@ -1,0 +1,57 @@
+<th:block th:replace="~{layout/main-layout :: main_layout(~{::#setup-2fa-content})}">
+    <div id="setup-2fa-content">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Bảo mật tài khoản</h2>
+            <p class="text-slate-500 mb-8">Kích hoạt xác thực 2 lớp để bảo vệ tài sản của bạn tốt hơn.</p>
+
+            <div class="card bg-white shadow-xl border border-slate-100 overflow-hidden">
+                <div class="flex flex-col md:flex-row">
+                    <div class="p-8 md:w-1/2 bg-slate-50">
+                        <h3 class="font-bold text-lg mb-4">Các bước thực hiện:</h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex items-start gap-3">
+                                <span class="bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center shrink-0">1</span>
+                                <span>Tải ứng dụng **Google Authenticator** trên App Store hoặc CH Play.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center shrink-0">2</span>
+                                <span>Chọn "Thêm mã" và thực hiện quét mã QR ở bên cạnh.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center shrink-0">3</span>
+                                <span>Nhập mã 6 chữ số xuất hiện trong ứng dụng vào ô xác nhận.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="p-8 md:w-1/2">
+                        <div class="flex flex-col items-center">
+                            <div class="p-2 border-2 border-indigo-100 rounded-xl mb-6">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth://totp/SentinelPay:vuong_dev?secret=JBSWY3DPEHPK3PXP"
+                                     alt="QR Code 2FA" class="w-40 h-40" />
+                            </div>
+
+                            <p class="text-xs text-slate-400 mb-4">Hoặc nhập mã thủ công:</p>
+                            <div class="badge badge-outline gap-2 font-mono py-4 px-6 mb-6">
+                                <span th:text="${twoFactorData.secretKey}">JBSWY3DPEHPK3PXP</span>
+                            </div>
+
+                            <form th:action="@{/security/setup-2fa}" th:object="${twoFactorData}" method="POST" class="w-full space-y-4">
+                                <div class="form-control">
+                                    <label class="label"><span class="label-text font-bold">Mã xác thực 6 số</span></label>
+                                    <input type="text" th:field="*{verificationCode}"
+                                           placeholder="000 000"
+                                           class="input input-bordered w-full text-center text-2xl tracking-[0.5em] font-bold focus:border-indigo-500"
+                                           maxlength="6" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary w-full bg-indigo-600 border-none shadow-lg">
+                                    Kích hoạt bảo mật
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>

@@ -1,6 +1,5 @@
 package com.jpay.wallet_service.controller;
 
-import com.jpay.wallet_service.dto.TopUpDto;
 import com.jpay.wallet_service.dto.TransactionDto;
 import com.jpay.wallet_service.dto.UserRegistrationDto;
 import org.springframework.stereotype.Controller;

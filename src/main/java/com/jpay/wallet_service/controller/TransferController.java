@@ -9,4 +9,9 @@ public class TransferController {
     public String transfer() {
         return "pages/transfer";
     }
+
+    @GetMapping("/deposit")
+    public String deposit() {
+        return "pages/deposit";
+    }
 }

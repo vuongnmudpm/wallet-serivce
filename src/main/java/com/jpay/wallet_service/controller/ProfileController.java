@@ -26,16 +26,5 @@ public class ProfileController {
         return "pages/profile";
     }
 
-    @GetMapping("/security/change-password")
-    public String showChangePasswordPage(Model model) {
-        model.addAttribute("passwordData", new PasswordChangeDto());
-        return "pages/change-password";
-    }
 
-    @PostMapping("/security/change-password")
-    public String processChangePassword(PasswordChangeDto dto) {
-        // Logic: Kiểm tra oldPassword đúng không -> Kiểm tra newPassword == confirmPassword
-        System.out.println("Yêu cầu đổi mật khẩu cho User hiện tại...");
-        return "redirect:/profile?success=password_changed";
-    }
 }

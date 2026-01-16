@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SentinelPay - Chuyển tiền</title>
+    <title>SentinelPay - Nạp tiền vào ví</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
     </div>
     <div class="flex-none">
         <div class="px-4 py-1.5 bg-indigo-50 rounded-full border border-indigo-100">
-            <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest block leading-none">Khả dụng</span>
+            <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest block leading-none">Số dư hiện tại</span>
             <span class="text-sm font-bold text-indigo-700">5,000,000 VND</span>
         </div>
     </div>
@@ -35,9 +35,9 @@
 
 <div class="container mx-auto max-w-2xl mt-8 p-4">
     <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-slate-400 flex items-center gap-2">
-        <a th:href="@{/}" class="hover:text-indigo-600 transition-colors">Bảng điều khiển</a>
+        <a th:href="@{/}" class="hover:text-indigo-600 transition-colors">Trang chủ</a>
         <i class="fa-solid fa-chevron-right text-[8px]"></i>
-        <span class="text-slate-800 font-black">Chuyển tiền nội bộ</span>
+        <span class="text-slate-800 font-black">Nạp tiền vào ví</span>
     </div>
 
     <div class="card bg-white shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 rounded-3xl overflow-hidden">
@@ -45,63 +45,69 @@
 
             <div class="flex items-center gap-3 mb-8">
                 <div class="w-1.5 h-8 bg-indigo-600 rounded-full"></div>
-                <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Chuyển tiền nhanh</h2>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Nạp tiền vào ví</h2>
             </div>
 
-            <form th:action="@{/transfer}" method="POST" class="space-y-7">
+            <form th:action="@{/deposit}" method="POST" class="space-y-7">
 
                 <div class="form-control w-full">
                     <label class="label">
-                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Đối tác nhận tin</span>
+                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Nguồn tiền (Ngân hàng liên kết)</span>
                     </label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors">
-                            <i class="fa-solid fa-user-shield"></i>
+                            <i class="fa-solid fa-building-columns"></i>
                         </div>
-                        <input type="text" name="recipient" placeholder="Username hoặc Email người nhận"
-                               class="input input-bordered w-full pl-11 h-14 bg-slate-50 border-slate-200 focus:bg-white focus:border-indigo-500 transition-all font-medium text-slate-700" required />
+                        <select name="source" class="select select-bordered w-full pl-11 h-14 bg-slate-50 border-slate-200 focus:bg-white focus:border-indigo-500 transition-all font-bold text-slate-700">
+                            <option value="vcb">Vietcombank (**** 8888)</option>
+                            <option value="tcb">Techcombank (**** 9999)</option>
+                            <option value="new">+ Thêm phương thức mới</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-control w-full">
                     <label class="label">
-                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Hạn mức chuyển (VND)</span>
-                        <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Min: 1,000</span>
+                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Số tiền cần nạp (VND)</span>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded italic">Hạn mức: 100M/ngày</span>
                     </label>
                     <div class="relative">
                         <input type="number" name="amount" placeholder="0"
                                class="input input-bordered w-full h-20 text-4xl font-black text-indigo-700 focus:border-indigo-500 bg-slate-50 text-center tracking-tighter"
-                               min="1000" step="1000" required />
+                               min="10000" step="10000" required />
                         <div class="absolute inset-y-0 right-6 flex items-center pointer-events-none">
                             <span class="text-sm font-black text-indigo-300">VND</span>
                         </div>
                     </div>
+                    <label class="label">
+                        <span class="text-[10px] text-slate-400 font-medium">Tối thiểu: 10,000 VND • Miễn phí nạp tiền</span>
+                    </label>
                 </div>
 
                 <div class="form-control w-full">
                     <label class="label">
-                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Nội dung giao dịch</span>
+                        <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Ghi chú giao dịch</span>
                     </label>
-                    <textarea name="note"
-                              class="textarea textarea-bordered h-28 focus:border-indigo-500 bg-slate-50 text-slate-700 font-medium"
-                              placeholder="Nhập lời nhắn gửi đến người nhận..."></textarea>
+                    <textarea name="merchantInfo"
+                              class="textarea textarea-bordered h-24 focus:border-indigo-500 bg-slate-50 text-slate-700 font-medium"
+                              placeholder="Ví dụ: Nạp tiền chi tiêu cá nhân..."></textarea>
                 </div>
 
-                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex gap-4 items-start">
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex gap-4 items-start shadow-inner">
                     <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600">
-                        <i class="fa-solid fa-microchip"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
                     <div class="flex-1">
-                        <p class="text-[10px] font-black uppercase text-indigo-700 tracking-wider mb-1">Sentinel Guard v4.0</p>
-                        <p class="text-xs text-slate-500 leading-relaxed font-medium">Hệ thống AI đang quét rủi ro thời gian thực. Giao dịch này sẽ được gán <strong>Fraud Score</strong> trước khi xác nhận.</p>
+                        <p class="text-[10px] font-black uppercase text-indigo-700 tracking-wider mb-1">Sentinel Guard Active</p>
+                        <p class="text-xs text-slate-500 leading-relaxed font-medium">Hệ thống đang giám sát điểm IP và thiết bị của bạn. Giao dịch nạp tiền sẽ được <strong>xác thực 2 lớp</strong> để đảm bảo an toàn.</p>
                     </div>
                 </div>
 
                 <div class="card-actions mt-4">
                     <button type="submit" class="btn btn-primary w-full bg-indigo-600 border-none hover:bg-indigo-700 text-white font-black uppercase tracking-[0.2em] text-sm h-16 shadow-xl shadow-indigo-200 transition-all active:scale-[0.98]">
-                        Tiếp tục xác nhận
+                        Xác nhận nạp tiền
                     </button>
-                    <a th:href="@{/}" class="btn btn-ghost w-full text-slate-400 font-bold uppercase text-[10px] tracking-widest mt-2 hover:bg-transparent hover:text-slate-600">Hủy bỏ giao dịch</a>
+                    <a th:href="@{/}" class="btn btn-ghost w-full text-slate-400 font-bold uppercase text-[10px] tracking-widest mt-2 hover:bg-transparent hover:text-slate-600 transition-colors">Hủy bỏ & Quay lại</a>
                 </div>
             </form>
         </div>
@@ -109,13 +115,14 @@
 
     <div class="flex flex-col items-center justify-center mt-12 space-y-4">
         <div class="flex items-center space-x-2 text-slate-300">
-            <i class="fa-solid fa-shield-halved text-sm"></i>
-            <span class="text-[9px] uppercase tracking-[0.4em] font-black">End-to-End Encrypted</span>
+            <i class="fa-solid fa-lock-open text-sm"></i>
+            <span class="text-[9px] uppercase tracking-[0.4em] font-black">PCI DSS Compliant System</span>
         </div>
-        <div class="flex gap-6 opacity-30 grayscale">
+        <div class="flex gap-8 opacity-30 grayscale filter">
             <i class="fa-brands fa-cc-visa text-2xl"></i>
             <i class="fa-brands fa-cc-mastercard text-2xl"></i>
-            <i class="fa-solid fa-building-columns text-xl"></i>
+            <i class="fa-brands fa-apple-pay text-3xl"></i>
+            <i class="fa-brands fa-google-pay text-3xl"></i>
         </div>
     </div>
 </div>

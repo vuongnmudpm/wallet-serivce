@@ -1,74 +1,225 @@
-<th:block th:replace="~{layout/main-layout :: main_layout(~{::#history-content})}">
-    <div id="history-content">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-slate-800">Lịch sử giao dịch</h2>
-            <button class="btn btn-outline btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                Xuất file Excel
-            </button>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelPay - Nhật ký giao dịch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+<div class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <aside class="w-full md:w-72 bg-[#020617] text-white p-6 shadow-2xl flex flex-col border-r border-slate-800/50">
+
+        <div class="flex items-center space-x-3 mb-12 px-2">
+            <div class="relative">
+                <div class="absolute inset-0 bg-indigo-500 blur-lg opacity-40 animate-pulse"></div>
+                <div class="relative bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-[0.15em] uppercase text-white">Sentinel<span class="text-indigo-500">Pay</span></span>
+                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-[0.3em] -mt-1">Core Security</span>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+        <nav class="flex-1 space-y-1.5">
+
+            <a th:href="@{/}" class="group flex items-center space-x-3 p-3.5 rounded-xl hover:bg-slate-900 text-slate-400 hover:text-white transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span class="text-xs font-black uppercase tracking-widest">Bảng điều khiển</span>
+            </a>
+
+            <a th:href="@{/history}" class="group flex items-center justify-between p-3.5 rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition-all duration-300">
+                <div class="flex items-center space-x-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600 group-hover:text-indigo-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-xs font-black uppercase tracking-widest">Lịch sử giao dịch</span>
+                </div>
+                <div class="w-1 h-4 bg-white/40 rounded-full"></div>
+            </a>
+
+            <a href="#" class="group flex items-center space-x-3 p-3.5 rounded-xl hover:bg-slate-900 text-slate-400 hover:text-white transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600 group-hover:text-indigo-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-xs font-black uppercase tracking-widest">Bảo mật & 2FA</span>
+            </a>
+
+            <div class="pt-8 pb-4">
+                <div class="flex items-center space-x-2 px-3 mb-4">
+                    <div class="h-[1px] flex-1 bg-slate-800"></div>
+                    <span class="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em]">Sentinel Admin</span>
+                    <div class="h-[1px] flex-1 bg-slate-800"></div>
+                </div>
+
+                <a href="#" class="group flex items-center space-x-3 p-3.5 rounded-xl hover:bg-rose-500/10 text-slate-400 hover:text-rose-500 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600 group-hover:text-rose-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span class="text-xs font-black uppercase tracking-widest">Xét duyệt Fraud</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-slate-800/50">
+            <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">System Health</span>
+                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-indigo-500 h-full w-[92%] shadow-[0_0_8px_rgba(99,102,241,0.4)]"></div>
+                </div>
+                <p class="text-[9px] text-slate-600 mt-2 font-medium italic">Sentinel AI Engine v4.0.1 - Live</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div class="flex items-center gap-4">
+                <div class="relative group cursor-pointer">
+                    <div class="w-14 h-14 rounded-2xl border-2 border-indigo-500/20 p-1 group-hover:border-indigo-500 transition-all duration-300">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vương"
+                             class="w-full h-full rounded-xl bg-slate-100 shadow-inner" />
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></div>
+                </div>
+
+                <div>
+                    <h1 class="text-2xl font-black text-slate-800 tracking-tight">
+                        Chào buổi sáng, <span class="text-indigo-600">Vương!</span>
+                    </h1>
+                    <div class="flex items-center gap-3 mt-1">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-day opacity-50"></i>
+                            09 Tháng 01, 2026
+                        </p>
+                        <span class="text-slate-300">|</span>
+                        <div class="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 rounded-md border border-indigo-100">
+                            <div class="w-1 h-1 bg-indigo-500 rounded-full"></div>
+                            <span class="text-[10px] font-black text-indigo-500 uppercase tracking-tighter">AI Guard: Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+
+                <div class="dropdown dropdown-end">
+                    <button tabindex="0" class="btn btn-ghost btn-circle bg-white border border-slate-100 shadow-sm hover:bg-slate-50 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="badge badge-error badge-xs absolute top-2 right-2 border-white"></span>
+                    </button>
+                    <ul tabindex="0" class="mt-3 z-[1] p-2 shadow-xl menu menu-sm dropdown-content bg-white rounded-xl w-64 border border-slate-100">
+                        <li class="menu-title text-slate-400 uppercase text-[10px] font-black tracking-widest">Cảnh báo rủi ro</li>
+                        <li><a class="py-3 text-rose-600 font-medium">Phát hiện IP lạ truy cập ví!</a></li>
+                        <div class="divider my-0"></div>
+                        <li><a class="text-slate-500 text-center">Xem tất cả thông báo</a></li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-ghost btn-circle bg-white border border-slate-100 shadow-sm hover:bg-slate-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </button>
+
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
             <div class="form-control">
-                <input type="text" placeholder="Tìm kiếm mã giao dịch..." class="input input-bordered w-full bg-slate-50" />
+                <label class="label"><span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Tra cứu nhanh</span></label>
+                <input type="text" placeholder="Mã TXN..." class="input input-bordered w-full bg-slate-50 border-slate-200 focus:border-indigo-500 font-medium text-sm h-11" />
             </div>
             <div class="form-control">
-                <select class="select select-bordered bg-slate-50">
-                    <option disabled selected>Trạng thái</option>
-                    <option>Thành công</option>
-                    <option>Đang xử lý</option>
-                    <option>Thất bại</option>
+                <label class="label"><span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Loại bảo mật</span></label>
+                <select class="select select-bordered bg-slate-50 border-slate-200 focus:border-indigo-500 font-bold text-sm h-11">
+                    <option selected>Tất cả</option>
+                    <option>Approved</option>
+                    <option>In Review</option>
                 </select>
             </div>
             <div class="form-control">
-                <input type="date" class="input input-bordered bg-slate-50" />
+                <label class="label"><span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Ngày ghi sổ</span></label>
+                <input type="date" class="input input-bordered bg-slate-50 border-slate-200 h-11" />
             </div>
-            <button class="btn btn-primary bg-indigo-600 border-none">Lọc kết quả</button>
+            <div class="flex items-end">
+                <button class="btn btn-primary w-full bg-indigo-600 border-none font-black uppercase tracking-widest text-xs h-11">Lọc kết quả</button>
+            </div>
         </div>
 
-        <div class="card bg-white shadow-xl overflow-hidden border border-slate-100">
+        <div class="card bg-white shadow-xl border border-slate-100 rounded-2xl overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="table w-full">
-                    <thead class="bg-slate-50">
-                    <tr>
-                        <th class="text-slate-500 uppercase text-xs">Thời gian</th>
-                        <th class="text-slate-500 uppercase text-xs">Mã giao dịch</th>
-                        <th class="text-slate-500 uppercase text-xs">Loại</th>
-                        <th class="text-slate-500 uppercase text-xs">Nội dung</th>
-                        <th class="text-slate-500 uppercase text-xs text-right">Số tiền</th>
-                        <th class="text-slate-500 uppercase text-xs text-center">Trạng thái</th>
+                <table class="table w-full border-separate border-spacing-0">
+                    <thead>
+                    <tr class="bg-slate-50/50">
+                        <th class="text-[10px] uppercase tracking-widest text-slate-400 font-black py-5 pl-8">Timestamp</th>
+                        <th class="text-[10px] uppercase tracking-widest text-slate-400 font-black py-5">TXN ID</th>
+                        <th class="text-[10px] uppercase tracking-widest text-slate-400 font-black py-5">Nội dung</th>
+                        <th class="text-[10px] uppercase tracking-widest text-slate-400 font-black py-5 text-right">Số tiền</th>
+                        <th class="text-[10px] uppercase tracking-widest text-slate-400 font-black py-5 text-center">Security Status</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="txn : ${transactions}" class="hover:bg-slate-50 transition-colors">
-                        <td class="text-sm" th:text="${#temporals.format(txn.date, 'dd/MM/yyyy HH:mm')}">09/01/2026 10:00</td>
-                        <td class="font-mono text-xs font-bold text-indigo-600" th:text="${txn.id}">#TXN12345</td>
-                        <td th:text="${txn.type}">Chuyển tiền</td>
-                        <td class="text-sm italic text-slate-600" th:text="${txn.description}">Gửi cho bạn bè</td>
-                        <td class="text-right font-bold"
-                            th:classappend="${txn.amount > 0 ? 'text-green-600' : 'text-red-600'}"
-                            th:text="${#numbers.formatDecimal(txn.amount, 0, 'COMMA', 0, 'POINT') + ' đ'}">
-                            -50,000 đ
+                    <tbody class="divide-y divide-slate-50">
+                    <tr th:each="txn : ${transactions}" class="hover:bg-slate-50/80 transition-all group">
+                        <td class="pl-8 py-5">
+                            <div class="text-[13px] font-bold text-slate-700" th:text="${#temporals.format(txn.date, 'dd/MM/yyyy')}">09/01/2026</div>
+                            <div class="text-[10px] font-medium text-slate-400" th:text="${#temporals.format(txn.date, 'HH:mm')}">10:45</div>
+                        </td>
+                        <td>
+                            <span class="font-mono text-[10px] font-black text-indigo-600 bg-indigo-50 px-2 py-1 rounded" th:text="${txn.id}">#TXN12345</span>
+                        </td>
+                        <td class="text-[13px] font-medium text-slate-500 italic" th:text="${txn.description}">Gửi tiền cho bạn</td>
+                        <td class="text-right">
+                            <div class="font-black text-sm" th:classappend="${txn.amount > 0 ? 'text-emerald-600' : 'text-slate-800'}"
+                                 th:text="${#numbers.formatDecimal(txn.amount, 0, 'COMMA', 0, 'POINT') + ' VND'}">-50,000 VND</div>
                         </td>
                         <td class="text-center">
-                            <span th:if="${txn.status == 'SUCCESS'}" class="badge badge-success badge-sm text-white py-3 px-4">THÀNH CÔNG</span>
-                            <span th:if="${txn.status == 'PENDING'}" class="badge badge-warning badge-sm text-white py-3 px-4">ĐANG XỬ LÝ</span>
-                            <span th:if="${txn.status == 'FAILED'}" class="badge badge-error badge-sm text-white py-3 px-4">THẤT BẠI</span>
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                <span class="text-[10px] font-black uppercase tracking-wider">Approved</span>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="p-4 bg-slate-50 flex justify-center">
-                <div class="join">
-                    <button class="join-item btn btn-sm">«</button>
-                    <button class="join-item btn btn-sm btn-active bg-indigo-600 border-none text-white">1</button>
-                    <button class="join-item btn btn-sm">2</button>
-                    <button class="join-item btn btn-sm">3</button>
-                    <button class="join-item btn btn-sm">»</button>
+            <div class="p-6 bg-slate-50/50 border-t border-slate-100 flex justify-between items-center">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trang 1 / 15</span>
+                <div class="join border border-slate-200">
+                    <button class="join-item btn btn-xs h-10 px-4 bg-white border-none text-slate-400">Trước</button>
+                    <button class="join-item btn btn-xs h-10 px-4 bg-indigo-600 text-white border-none">1</button>
+                    <button class="join-item btn btn-xs h-10 px-4 bg-white border-none text-slate-600">2</button>
+                    <button class="join-item btn btn-xs h-10 px-4 bg-white border-none text-slate-400">Sau</button>
                 </div>
             </div>
         </div>
-    </div>
-</th:block>
+    </main>
+</div>
+
+</body>
+</html>

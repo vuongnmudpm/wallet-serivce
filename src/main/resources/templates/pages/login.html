@@ -13,35 +13,35 @@
 </head>
 <body class="bg-slate-50 flex items-center justify-center min-h-screen p-4">
 
-<div class="card w-full max-w-md bg-base-100 shadow-2xl border border-slate-100">
+<div class="card w-full max-w-md bg-white shadow-2xl border border-slate-100">
     <div class="card-body p-8">
         <div class="flex flex-col items-center mb-8">
-            <div class="bg-indigo-600 p-3 rounded-2xl shadow-lg mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+            <div class="bg-indigo-50 p-3 rounded-2xl mb-4"> <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
             </div>
             <h2 class="text-3xl font-extrabold text-slate-800">SentinelPay</h2>
-            <p class="text-slate-500 text-sm mt-2">Hệ thống thanh toán an toàn & thông minh</p>
+            <p class="text-slate-500 text-sm mt-2 font-medium">Chào mừng bạn trở lại!</p>
         </div>
 
         <form th:action="@{/login}" method="POST" class="space-y-5">
-            <div th:if="${param.error}" class="alert alert-error text-sm py-2">
-                <span>Tài khoản hoặc mật khẩu không chính xác!</span>
+            <div th:if="${param.error}" class="alert alert-error bg-red-50 border-none text-red-600 text-sm py-3 px-4 rounded-xl flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>Tài khoản hoặc mật khẩu không đúng!</span>
             </div>
 
             <div class="form-control">
                 <label class="label"><span class="label-text font-semibold text-slate-700">Tên đăng nhập</span></label>
-                <input type="text" name="username" placeholder="Nhập username của bạn" class="input input-bordered focus:border-indigo-500 w-full bg-slate-50" required />
+                <input type="text" name="username" placeholder="Nhập username" class="input input-bordered focus:outline-none focus:border-indigo-500 w-full bg-slate-50 border-slate-200" required />
             </div>
 
             <div class="form-control">
                 <label class="label">
                     <span class="label-text font-semibold text-slate-700">Mật khẩu</span>
-                    <a href="#" class="label-text-alt link link-hover text-indigo-600 font-medium">Quên mật khẩu?</a>
+                    <a href="#" class="label-text-alt link link-hover text-indigo-600 font-bold">Quên?</a>
                 </label>
                 <div class="relative">
-                    <input id="password-input" type="password" name="password" placeholder="••••••••" class="input input-bordered focus:border-indigo-500 w-full bg-slate-50" required />
+                    <input id="password-input" type="password" name="password" placeholder="••••••••" class="input input-bordered focus:outline-none focus:border-indigo-500 w-full bg-slate-50 border-slate-200" required />
                     <button type="button" onclick="togglePassword()" class="absolute right-3 top-3 text-slate-400 hover:text-indigo-600">
                         <svg id="eye-icon-login" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -51,22 +51,22 @@
             </div>
 
             <div class="form-control mt-6">
-                <button type="submit" class="btn btn-primary bg-indigo-600 border-none hover:bg-indigo-700 text-white shadow-lg">Đăng nhập</button>
+                <button type="submit" class="btn btn-primary bg-indigo-600 border-none hover:bg-indigo-700 text-white shadow-md normal-case text-base">Đăng nhập ngay</button>
             </div>
         </form>
 
-        <div class="divider text-slate-400 text-xs">HOẶC TIẾP TỤC VỚI</div>
+        <div class="divider text-slate-300 text-[10px] font-bold tracking-widest uppercase">Hoặc</div>
 
         <div class="flex flex-col gap-3">
-            <a th:href="@{/oauth2/authorization/google}" class="btn btn-outline border-slate-200 hover:bg-slate-50 hover:text-slate-800 normal-case font-medium">
+            <a th:href="@{/oauth2/authorization/google}" class="btn btn-outline border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-600 normal-case font-semibold">
                 <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5 mr-2" alt="Google Logo">
-                Đăng nhập bằng Google
+                Tiếp tục với Google
             </a>
         </div>
 
         <p class="text-center text-sm text-slate-500 mt-8">
-            Chưa có tài khoản?
-            <a th:href="@{/register}" class="text-indigo-600 font-bold hover:underline">Đăng ký ngay</a>
+            Thành viên mới?
+            <a th:href="@{/register}" class="text-indigo-600 font-bold hover:text-indigo-800">Đăng ký tài khoản</a>
         </p>
     </div>
 </div>

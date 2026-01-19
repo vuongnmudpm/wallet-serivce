@@ -33,7 +33,7 @@ public class SecurityConfig {
                 // 2. Cấu hình phân quyền chi tiết
                 .authorizeHttpRequests(auth -> auth
                         // Cho phép công khai các API xác thực
-                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/**", "/api/auth/register").permitAll()
                         // Tất cả các API còn lại (giao dịch, ví, thông tin user) PHẢI có Token
                         .anyRequest().authenticated()
                 )

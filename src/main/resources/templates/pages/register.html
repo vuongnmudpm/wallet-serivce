@@ -8,8 +8,23 @@
 <body class="bg-slate-50 flex items-center justify-center min-h-screen p-4">
 <div class="card w-full max-w-md bg-white shadow-2xl p-8 border border-slate-100">
     <div class="text-center mb-8">
+        <div class="flex flex-col items-center mb-8">
+            <div class="bg-indigo-50 p-3 rounded-2xl mb-4"> <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            </div>
+        </div>
         <h2 class="text-3xl font-bold text-indigo-700">Tạo tài khoản</h2>
         <p class="text-slate-500 text-sm">Tham gia hệ thống SentinelPay ngay hôm nay</p>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success shadow-lg mb-6 py-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span class="text-sm font-medium" th:text="${successMessage}"></span>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-error shadow-lg mb-6 py-3 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span class="text-sm font-medium" th:text="${errorMessage}"></span>
     </div>
     <form th:action="@{/register}" method="POST" class="space-y-4">
         <div class="form-control">

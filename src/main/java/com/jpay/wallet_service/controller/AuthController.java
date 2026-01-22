@@ -16,20 +16,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
     private final AuthService authService;
 
+    @GetMapping("/register")
+    public String showRegisterPage(Model model) {
+        if (!model.containsAttribute("request")) {
+            model.addAttribute("request", new RegisterRequest());
+        }
+        return "pages/register";
+    }
+
     @PostMapping("/register")
     public String processRegister(@ModelAttribute("request") RegisterRequest request,
                                   RedirectAttributes redirectAttributes,
                                   Model model) {
         try {
-            // Gọi hàm register mà bạn đã viết
             authService.register(request);
 
-            // Nếu thành công: Dùng RedirectAttributes để giữ thông báo sau khi chuyển trang
             redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công! Bạn có thể đăng nhập ngay.");
             return "redirect:/register";
 
         } catch (Exception e) {
-            // Nếu thất bại (trùng tên đăng nhập...): Trả về trang cũ và hiển thị lỗi
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("request", request); // Giữ lại dữ liệu người dùng đã nhập
             return "pages/register";

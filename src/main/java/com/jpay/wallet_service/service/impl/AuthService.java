@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -50,7 +52,11 @@ public class AuthService {
             );
 
             // Xác thực thành công mới lấy user ra check status
-            User user = userRepository.findByUsername(request.getUsername());
+            Optional<User> userOptional = userRepository.findByUsername(request.getUsername());
+            User user = null;
+            if (userOptional.isPresent()) {
+                user = userOptional.get();
+            }
             if ("LOCKED".equals(user.getUserStatus())) {
                 throw new RuntimeException("Tài khoản của bạn hiện đang bị khóa!");
             }

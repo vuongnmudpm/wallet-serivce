@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -17,7 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Tìm user trong DB của bạn
-        User user = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = null;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+        }
         if (user == null) {
             throw new UsernameNotFoundException("Không tìm thấy người dùng: " + username);
         }

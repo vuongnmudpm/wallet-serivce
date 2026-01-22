@@ -35,7 +35,7 @@ public class User {
     @Column(name = "CreatedAt")
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    @Column(name = "Balance")
-    private BigDecimal balance;
+    @Column(name = "Balance", nullable = false)
+    private BigDecimal balance = BigDecimal.ZERO;
 
 }

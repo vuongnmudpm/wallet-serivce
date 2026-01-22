@@ -15,7 +15,7 @@ import java.util.Date;
 public class JwtProvider {
 
     // 1. Chìa khóa bí mật để ký tên lên thẻ (Phải giữ kín!)
-    private final String JWT_SECRET = "lam-marketing-chuyen-sang-lam-dev-java-sieu-cap-pro";
+    private final String JWT_SECRET = "chuoi_bi_mat_cua_toi_phai_that_la_dai_tren_32_ky_tu";
 
     // 2. Thời gian thẻ có hiệu lực (ví dụ: 24 giờ)
     private final long JWT_EXPIRATION = 86400000L;
